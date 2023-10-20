@@ -1,7 +1,7 @@
 <?php
-class ControlRol
+class ControlIndicador
 {
-    var $objRol;
+    var $objIndicador;
     function conectar($comandoSql)
     {
         $objControlConexion = new ControlConexion();
@@ -16,21 +16,21 @@ class ControlRol
         $objControlConexion->cerrarBd();
     }
 
-    function __construct($objRol)
+    function __construct($objIndicador)
     {
-        $this->objRol = $objRol;
+        $this->objIndicador = $objIndicador;
     }
 
     function guardar()
     {
-        $nom = $this->objRol->getNombre();
-        $comandoSql = "insert into rol(nombre) values('$nom')";
+        $nom = $this->objIndicador->getNombre();
+        $comandoSql = "insert into indicador(nombre) values('$nom')";
         $conectar = $this->conectar($comandoSql);
     }
 
     function listar()
     {
-        $comandoSql = "SELECT * FROM rol";
+        $comandoSql = "SELECT * FROM indicador";
         $objControlConexion = new ControlConexion();
         $objControlConexion->abrirBd(
             $GLOBALS['serv'],
@@ -41,17 +41,17 @@ class ControlRol
         );
         $recordSet = $objControlConexion->ejecutarSelect($comandoSql);
         if (mysqli_num_rows($recordSet) > 0) {
-            $arregloRoles = array();
+            $arregloIndicadores = array();
             $i = 0;
             while ($row = $recordSet->fetch_array(MYSQLI_BOTH)) {
-                $objRol = new Rol(0, "");
-                $objRol->setId($row['id']);
-                $objRol->setNombre($row['nombre']);
-                $arregloRoles[$i] = $objRol;
+                $objIndicador = new Indicador(0, "");
+                $objIndicador->setId($row['id']);
+                $objIndicador->setNombre($row['nombre']);
+                $arregloIndicadores[$i] = $objIndicador;
                 $i++;
             }
         }
         $objControlConexion->cerrarBd();
-        return $arregloRoles;
+        return $arregloIndicadores;
     }
 }

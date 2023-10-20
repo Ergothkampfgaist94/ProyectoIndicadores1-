@@ -2,6 +2,19 @@
 class ControlRolUsuario
 {
     var $objRolUsuario;
+    function conectar($comandoSql)
+    {
+        $objControlConexion = new ControlConexion();
+        $objControlConexion->abrirBd(
+            $GLOBALS['serv'],
+            $GLOBALS['usua'],
+            $GLOBALS['pass'],
+            $GLOBALS['bdat'],
+            $GLOBALS['port']
+        );
+        $objControlConexion->ejecutarComandoSql($comandoSql);
+        $objControlConexion->cerrarBd();
+    }
 
     function __construct($objRolUsuario)
     {
@@ -12,17 +25,8 @@ class ControlRolUsuario
     {
         $fkEmail = $this->objRolUsuario->getFkEmail();
         $fkIdRol = $this->objRolUsuario->getFkIdRol();
-        $comando = "insert into rol_usuario(fkEmail,fkIdRol) values('$fkEmail',$fkIdRol)";
-        $objControlConexion = new ControlConexion();
-        $objControlConexion->abrirBd(
-            $GLOBALS['serv'],
-            $GLOBALS['usua'],
-            $GLOBALS['pass'],
-            $GLOBALS['bdat'],
-            $GLOBALS['port']
-        );
-        $objControlConexion->ejecutarComandoSql($comando);
-        $objControlConexion->cerrarBd();
+        $comandoSql = "insert into rol_usuario(fkEmail,fkIdRol) values('$fkEmail',$fkIdRol)";
+        $conectar = $this->conectar($comandoSql);
     }
 
     function listarRolesDelUsuario($fkEmail)

@@ -1,7 +1,7 @@
 <?php
-class ControlRol
+class ControlFuenteporIndicador
 {
-    var $objRol;
+    var $objFuenteporIndicador;
     function conectar($comandoSql)
     {
         $objControlConexion = new ControlConexion();
@@ -16,21 +16,24 @@ class ControlRol
         $objControlConexion->cerrarBd();
     }
 
-    function __construct($objRol)
+    function __construct($objFuenteporIndicador)
     {
-        $this->objRol = $objRol;
+        $this->objFuenteporIndicador = $objFuenteporIndicador;
     }
 
     function guardar()
     {
-        $nom = $this->objRol->getNombre();
-        $comandoSql = "insert into rol(nombre) values('$nom')";
+        $fkidFuente = $this->objFuenteporIndicador->getfkidFuente();
+        $fkidIndicador = $this->objFuenteporIndicador->getfkidIndicador();
+        $comandoSql = "insert into fuentesporindicador(fkidFuente,fkidIndicador) values('$fkidFuente',$fkidIndicador)";
         $conectar = $this->conectar($comandoSql);
     }
 
-    function listar()
+    function listarRolesDelUsuario($fkidFuente)
     {
-        $comandoSql = "SELECT * FROM rol";
+        $comandoSql = "SELECT fuentesporindicador.fkidIndicador,fuente.nombre 
+            FROM fuentesporindicador INNER JOIN fuente ON fuentesporindicador.fkidIndicador = fuente.id
+            WHERE fkidFuente = '$fkidFuente'";
         $objControlConexion = new ControlConexion();
         $objControlConexion->abrirBd(
             $GLOBALS['serv'],
@@ -41,17 +44,17 @@ class ControlRol
         );
         $recordSet = $objControlConexion->ejecutarSelect($comandoSql);
         if (mysqli_num_rows($recordSet) > 0) {
-            $arregloRoles = array();
+            $arregloIndicadores = array();
             $i = 0;
             while ($row = $recordSet->fetch_array(MYSQLI_BOTH)) {
-                $objRol = new Rol(0, "");
+                $objRol = new Indicador(0, "");
                 $objRol->setId($row['id']);
                 $objRol->setNombre($row['nombre']);
-                $arregloRoles[$i] = $objRol;
+                $arregloIndicadores[$i] = $objRol;
                 $i++;
             }
         }
         $objControlConexion->cerrarBd();
-        return $arregloRoles;
+        return $arregloIndicadores;
     }
 }

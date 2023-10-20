@@ -101,8 +101,8 @@ class ControlFuente
             $i = 0;
             while ($row = $recordSet->fetch_array(MYSQLI_BOTH)) {
                 $objFuente = new Fuente("", "");
-                $objFuente->setvar1($row['id']);
-                $objFuente->setvar2($row['nombre']);
+                $objFuente->setidFuente($row['id']);
+                $objFuente->setnombreFuente($row['nombre']);
                 $arregloFuente[$i] = $objFuente;
                 $i++;
             }

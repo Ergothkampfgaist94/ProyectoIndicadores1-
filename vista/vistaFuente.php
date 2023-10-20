@@ -2,15 +2,19 @@
 include '../controlador/configBd.php';
 include '../controlador/ControlConexion.php';
 include '../controlador/ControlFuente.php';
+include '../controlador/ControlIndicador.php';
+include '../controlador/ControlFuenteporIndicador.php';
 include '../modelo/Fuente.php';
+include '../modelo/Indicador.php';
+include '../modelo/fuenteporindicador.php';
 $boton = "";
 $id = "";
 $nombre = "";
 $listbox1 = array();
 $objControlFuente = new ControlFuente(null);
 $arregloFuente = $objControlFuente->listar();
-$objControlRol = new ControlRol(null);
-$arregloRoles = $objControlRol->listar();
+$objControlIndicador = new ControlIndicador(null);
+$arregloRoles = $objControlIndicador->listar();
 if (isset($_POST['bt'])) $boton = $_POST['bt']; //toma del arreglo post el value del bt	
 if (isset($_POST['txtId'])) $id = $_POST['txtId'];
 if (isset($_POST['txtNombre'])) $nombre = $_POST['txtNombre'];
@@ -24,32 +28,32 @@ switch ($boton) {
             for ($i = 0; $i < count($listbox1); $i++) {
                 $cadenas = explode(";", $listbox1[$i]);
                 $id = $cadenas[0];
-                $objRolUsuario = new RolUsuario($id, $id);
-                $objControlRolUsuario = new ControlRolUsuario($objRolUsuario);
-                $objControlRolUsuario->guardar();
+                $objFuenteporIndicador = new ControlFuenteporIndicador($id, $id);
+                $objControlFuenteporIndicador = new ControlFuenteporIndicador($objFuenteporIndicador);
+                $objControlFuenteporIndicador->guardar();
             }
         }
-        header('Location: vistaUsuarios.php');
+        header('Location: vistaFuente.php');
         break;
     case 'Consultar':
         $objFuente = new Fuente($id, "");
         $objControlFuente = new ControlFuente($objFuente);
         $objFuente = $objControlFuente->consultar();
         $nombre = $objFuente->getContrasena();
-        $objControlRolUsuario = new ControlRolUsuario(null);
-        $arregloRolesConsulta = $objControlRolUsuario->listarRolesDelUsuario($id);
+        $objControlFuenteporIndicador = new ControlRolUsuario(null);
+        $arregloIndicadoresConsulta = $objControlFuenteporIndicador->listarRolesDelUsuario($id);
         break;
     case 'Modificar':
         $objFuente = new Fuente($id, $nombre);
         $objControlFuente = new ControlFuente($objFuente);
         $objControlFuente->modificar();
-        header('Location: vistaUsuarios.php');
+        header('Location: vistaFuente.php');
         break;
     case 'Borrar':
         $objFuente = new Fuente($id, "");
         $objControlFuente = new ControlFuente($objFuente);
         $objControlFuente->borrar();
-        header('Location: vistaUsuarios.php');
+        header('Location: vistaFuente.php');
         break;
     default:
         break;
@@ -113,8 +117,8 @@ switch ($boton) {
                                         <label for="checkbox1"></label>
                                     </span>
                                 </td>
-                                <td><?php echo $arregloFuente[$i]->getEmail(); ?></td>
-                                <td><?php echo $arregloFuente[$i]->getContrasena(); ?></td>
+                                <td><?php echo $arregloFuente[$i]->getIdFuente(); ?></td>
+                                <td><?php echo $arregloFuente[$i]->getNombreFuente(); ?></td>
                                 <td>
                                     <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                                     <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
@@ -144,7 +148,7 @@ switch ($boton) {
     <div id="crudModal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="vistaUsuarios.php" method="post">
+                <form action="vistaFuente.php" method="post">
                     <div class="modal-header">
                         <h4 class="modal-title">Usuario</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
