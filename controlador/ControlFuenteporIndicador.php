@@ -23,9 +23,9 @@ class ControlFuenteporIndicador
 
     function guardar()
     {
-        $fkidFuente = $this->objFuenteporIndicador->getfkidFuente();
-        $fkidIndicador = $this->objFuenteporIndicador->getfkidIndicador();
-        $comandoSql = "insert into fuentesporindicador(fkidFuente,fkidIndicador) values('$fkidFuente',$fkidIndicador)";
+        $fkIdFuente = $this->objFuenteporIndicador->getfkIdFuente();
+        $fkIdIndicador = $this->objFuenteporIndicador->getfkIdIndicador();
+        $comandoSql = "insert into fuentesporindicador(fkidFuente,fkidIndicador) values('$fkIdFuente',$fkIdIndicador)";
         $conectar = $this->conectar($comandoSql);
     }
 

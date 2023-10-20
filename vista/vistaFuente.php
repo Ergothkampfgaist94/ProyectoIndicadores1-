@@ -6,7 +6,7 @@ include '../controlador/ControlIndicador.php';
 include '../controlador/ControlFuenteporIndicador.php';
 include '../modelo/Fuente.php';
 include '../modelo/Indicador.php';
-include '../modelo/fuenteporindicador.php';
+include '../modelo/FuenteporIndicador.php';
 $boton = "";
 $id = "";
 $nombre = "";
@@ -14,8 +14,8 @@ $listbox1 = array();
 $objControlFuente = new ControlFuente(null);
 $arregloFuente = $objControlFuente->listar();
 $objControlIndicador = new ControlIndicador(null);
-$arregloRoles = $objControlIndicador->listar();
-if (isset($_POST['bt'])) $boton = $_POST['bt']; //toma del arreglo post el value del bt	
+$arregloIndicadores = $objControlIndicador->listar();
+if (isset($_POST['bt'])) $boton = $_POST['bt'];
 if (isset($_POST['txtId'])) $id = $_POST['txtId'];
 if (isset($_POST['txtNombre'])) $nombre = $_POST['txtNombre'];
 if (isset($_POST['listbox1'])) $listbox1 = $_POST['listbox1'];
@@ -28,7 +28,7 @@ switch ($boton) {
             for ($i = 0; $i < count($listbox1); $i++) {
                 $cadenas = explode(";", $listbox1[$i]);
                 $id = $cadenas[0];
-                $objFuenteporIndicador = new ControlFuenteporIndicador($id, $id);
+                $objFuenteporIndicador = new FuenteporIndicador($id, $id);
                 $objControlFuenteporIndicador = new ControlFuenteporIndicador($objFuenteporIndicador);
                 $objControlFuenteporIndicador->guardar();
             }
@@ -40,7 +40,7 @@ switch ($boton) {
         $objControlFuente = new ControlFuente($objFuente);
         $objFuente = $objControlFuente->consultar();
         $nombre = $objFuente->getContrasena();
-        $objControlFuenteporIndicador = new ControlRolUsuario(null);
+        $objControlFuenteporIndicador = new ControlFuenteporIndicador(null);
         $arregloIndicadoresConsulta = $objControlFuenteporIndicador->listarRolesDelUsuario($id);
         break;
     case 'Modificar':
@@ -101,9 +101,9 @@ switch ($boton) {
                                     <label for="selectAll"></label>
                                 </span>
                             </th>
-                            <th>Email</th>
-                            <th>Contraseña</th>
-                            <th>Actions</th>
+                            <th>ID</th>
+                            <th>Fuentes</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -150,7 +150,7 @@ switch ($boton) {
             <div class="modal-content">
                 <form action="vistaFuente.php" method="post">
                     <div class="modal-header">
-                        <h4 class="modal-title">Usuario</h4>
+                        <h4 class="modal-title">Fuentes</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
@@ -159,21 +159,21 @@ switch ($boton) {
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#home">Datos de usuario</a>
+                                    <a class="nav-link active" data-toggle="tab" href="#home">Tipos de Fuentes</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#menu1">Roles por usuario</a>
+                                    <a class="nav-link" data-toggle="tab" href="#menu1">Indicadores por Fuentes</a>
                                 </li>
                             </ul>
                             <!-- Tab panes -->
                             <div class="tab-content">
                                 <div id="home" class="container tab-pane active"><br>
                                     <div class="form-group">
-                                        <label>Email</label>
-                                        <input type="email" id="txtId" name="txtId" class="form-control" value="<?php echo $id ?>">
+                                        <label>ID</label>
+                                        <input type="text" id="txtId" name="txtId" class="form-control" value="<?php echo $id ?>">
                                     </div>
                                     <div class="form-group">
-                                        <label>Contraseña</label>
+                                        <label>Fuente</label>
                                         <input type="text" id="txtNombre" name="txtNombre" class="form-control" value="<?php echo $nombre ?>">
                                     </div>
                                     <div class="form-group">
@@ -186,16 +186,16 @@ switch ($boton) {
                                 <div id="menu1" class="container tab-pane fade"><br>
                                     <div class="container">
                                         <div class="form-group">
-                                            <label for="combobox1">Todos los roles</label>
+                                            <label for="combobox1">Indicadores disponibles</label>
                                             <select class="form-control" id="combobox1" name="combobox1">
-                                                <?php for ($i = 0; $i < count($arregloRoles); $i++) { ?>
-                                                    <option value="<?php echo $arregloRoles[$i]->getId() . ";" . $arregloRoles[$i]->getNombre(); ?>">
-                                                        <?php echo $arregloRoles[$i]->getId() . ";" . $arregloRoles[$i]->getNombre(); ?>
+                                                <?php for ($i = 0; $i < count($arregloIndicadores); $i++) { ?>
+                                                    <option value="<?php echo $arregloIndicadores[$i]->getId() . ";" . $arregloIndicadores[$i]->getNombre(); ?>">
+                                                        <?php echo $arregloIndicadores[$i]->getId() . ";" . $arregloIndicadores[$i]->getNombre(); ?>
                                                     </option>
                                                 <?php } ?>
                                             </select>
                                             <br>
-                                            <label for="listbox1">Roles específicos del usuario</label>
+                                            <label for="listbox1">Indicadores seleccionados</label>
                                             <select multiple class="form-control" id="listbox1" name="listbox1[]">
 
                                             </select>

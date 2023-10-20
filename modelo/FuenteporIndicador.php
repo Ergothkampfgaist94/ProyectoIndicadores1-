@@ -4,8 +4,10 @@ class FuenteporIndicador
     var $fkIdFuente;
     var $fkIdIndicador;
 
-    function __construct($fkIdFuente, $fkIdIndicador)
-    {
+    function __construct(
+        $fkIdFuente,
+        $fkIdIndicador
+    ) {
         $this->fkIdFuente = $fkIdFuente;
         $this->fkIdIndicador = $fkIdIndicador;
     }
