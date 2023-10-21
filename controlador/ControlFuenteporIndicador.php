@@ -29,7 +29,7 @@ class ControlFuenteporIndicador
         $conectar = $this->conectar($comandoSql);
     }
 
-    function listarRolesDelUsuario($fkidFuente)
+    function listarFuentesPorIndicador($fkidFuente)
     {
         $comandoSql = "SELECT fuentesporindicador.fkidIndicador,fuente.nombre 
             FROM fuentesporindicador INNER JOIN fuente ON fuentesporindicador.fkidIndicador = fuente.id
@@ -47,10 +47,10 @@ class ControlFuenteporIndicador
             $arregloIndicadores = array();
             $i = 0;
             while ($row = $recordSet->fetch_array(MYSQLI_BOTH)) {
-                $objRol = new Indicador(0, "");
-                $objRol->setId($row['id']);
-                $objRol->setNombre($row['nombre']);
-                $arregloIndicadores[$i] = $objRol;
+                $objInicador = new Indicador(0, "");
+                $objInicador->setIdIndicador($row['id']);
+                $objInicador->setNombreIndicador($row['nombre']);
+                $arregloIndicadores[$i] = $objInicador;
                 $i++;
             }
         }

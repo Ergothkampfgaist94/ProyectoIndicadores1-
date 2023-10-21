@@ -25,7 +25,7 @@ class ControlRolUsuario
     {
         $fkEmail = $this->objRolUsuario->getFkEmail();
         $fkIdRol = $this->objRolUsuario->getFkIdRol();
-        $comandoSql = "insert into rol_usuario(fkEmail,fkIdRol) values('$fkEmail',$fkIdRol)";
+        $comandoSql = "insert into rol_usuario(fkemail,fkidrol) values('$fkEmail',$fkIdRol)";
         $conectar = $this->conectar($comandoSql);
     }
 

@@ -1,8 +1,7 @@
 <?php
-class Indicador
+class TipoIndicador
 {
-    var $id;
-    var $nombre;
+    var $id, $nombre;
 
     function __construct($id, $nombre)
     {
@@ -10,22 +9,22 @@ class Indicador
         $this->nombre = $nombre;
     }
 
-    function setIdIndicador($id)
+    function setIdTipoIndicador($id)
     {
         $this->id = $id;
     }
 
-    function getIdIndicador()
+    function getIdTipoIndicador()
     {
         return $this->id;
     }
 
-    function setNombreIndicador($nombre)
+    function setNombreTipoIndicador($nombre)
     {
         $this->nombre = $nombre;
     }
 
-    function getNombreIndicador()
+    function getNombreTipoIndicador()
     {
         return $this->nombre;
     }

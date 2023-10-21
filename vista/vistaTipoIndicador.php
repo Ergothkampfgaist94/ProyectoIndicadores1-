@@ -1,18 +1,16 @@
 <?php
 include '../controlador/configBd.php';
 include '../controlador/ControlConexion.php';
-include '../controlador/ControlFuente.php';
+include '../controlador/ControlTipoIndicador.php';
 include '../controlador/ControlIndicador.php';
-include '../controlador/ControlFuenteporIndicador.php';
-include '../modelo/Fuente.php';
+include '../modelo/TipoIndicador.php';
 include '../modelo/Indicador.php';
-include '../modelo/FuenteporIndicador.php';
 $boton = "";
 $id = "";
 $nombre = "";
 $listbox1 = array();
-$objControlFuente = new ControlFuente(null);
-$arregloFuente = $objControlFuente->listar();
+$objControlTipoIndicador = new ControlTipoIndicador(null);
+$arregloTipoIndicador = $objControlTipoIndicador->listar();
 $objControlIndicador = new ControlIndicador(null);
 $arregloIndicadores = $objControlIndicador->listar();
 if (isset($_POST['bt'])) $boton = $_POST['bt'];
@@ -21,39 +19,39 @@ if (isset($_POST['txtNombre'])) $nombre = $_POST['txtNombre'];
 if (isset($_POST['listbox1'])) $listbox1 = $_POST['listbox1'];
 switch ($boton) {
     case 'Guardar':
-        $objFuente = new Fuente($id, $nombre);
-        $objControlFuente = new ControlFuente($objFuente);
-        $objControlFuente->guardar();
+        $objTipoIndicador = new TipoIndicador($id, $nombre);
+        $objControlTipoIndicador = new ControlTipoIndicador($objTipoIndicador);
+        $objControlTipoIndicador->guardar();
         if ($listbox1 != "") {
             for ($i = 0; $i < count($listbox1); $i++) {
                 $cadenas = explode(";", $listbox1[$i]);
                 $id = $cadenas[0];
-                $objFuenteporIndicador = new FuenteporIndicador($id, $id);
-                $objControlFuenteporIndicador = new ControlFuenteporIndicador($objFuenteporIndicador);
-                $objControlFuenteporIndicador->guardar();
+                $objIndicador = new Indicador($id, $id);
+                $objControlIndicador = new ControlIndicador($objIndicador);
+                $objControlIndicador->guardar();
             }
         }
-        header('Location: vistaFuente.php');
+        header('Location: TipoIndicador.php');
         break;
     case 'Consultar':
-        $objFuente = new Fuente($id, "");
-        $objControlFuente = new ControlFuente($objFuente);
-        $objFuente = $objControlFuente->consultar();
-        $nombre = $objFuente->getContrasena();
-        $objControlFuenteporIndicador = new ControlFuenteporIndicador(null);
-        $arregloIndicadoresConsulta = $objControlFuenteporIndicador->listarFuentesPorIndicador($id);
+        $objTipoIndicador = new TipoIndicador($id, "");
+        $objControlTipoIndicador = new ControlTipoIndicador($objTipoIndicador);
+        $objTipoIndicador = $objControlTipoIndicador->consultar();
+        $nombre = $objTipoIndicador->getnombreTipoIndicador();
+        $objControlTipoIndicador = new ControlTipoIndicador(null);
+        $arregloIndicadoresConsulta = $objIndicador->listarIndicadorTipoIndicador($id);
         break;
     case 'Modificar':
-        $objFuente = new Fuente($id, $nombre);
-        $objControlFuente = new ControlFuente($objFuente);
-        $objControlFuente->modificar();
-        header('Location: vistaFuente.php');
+        $objTipoIndicador = new TipoIndicador($id, $nombre);
+        $objControlTipoIndicador = new ControlTipoIndicador($objTipoIndicador);
+        $objControlTipoIndicador->modificar();
+        header('Location: TipoIndicador.php');
         break;
     case 'Borrar':
-        $objFuente = new Fuente($id, "");
-        $objControlFuente = new ControlFuente($objFuente);
-        $objControlFuente->borrar();
-        header('Location: vistaFuente.php');
+        $objTipoIndicador = new TipoIndicador($id, "");
+        $objControlTipoIndicador = new ControlTipoIndicador($objTipoIndicador);
+        $objControlTipoIndicador->borrar();
+        header('Location: TipoIndicador.php');
         break;
     default:
         break;
@@ -108,7 +106,7 @@ switch ($boton) {
                     </thead>
                     <tbody>
                         <?php
-                        for ($i = 0; $i < count($arregloFuente); $i++) {
+                        for ($i = 0; $i < count($arregloTipoIndicador); $i++) {
                         ?>
                             <tr>
                                 <td>
@@ -117,8 +115,8 @@ switch ($boton) {
                                         <label for="checkbox1"></label>
                                     </span>
                                 </td>
-                                <td><?php echo $arregloFuente[$i]->getIdFuente(); ?></td>
-                                <td><?php echo $arregloFuente[$i]->getNombreFuente(); ?></td>
+                                <td><?php echo $arregloTipoIndicador[$i]->getIdTipoIndicador(); ?></td>
+                                <td><?php echo $arregloTipoIndicador[$i]->getNombreTipoIndicador(); ?></td>
                                 <td>
                                     <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                                     <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
@@ -148,9 +146,9 @@ switch ($boton) {
     <div id="crudModal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="vistaFuente.php" method="post">
+                <form action="vistaTipoIndicador.php" method="post">
                     <div class="modal-header">
-                        <h4 class="modal-title">Fuentes</h4>
+                        <h4 class="modal-title">Tipo Indicador</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
@@ -159,10 +157,10 @@ switch ($boton) {
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#home">Tipos de Fuentes</a>
+                                    <a class="nav-link active" data-toggle="tab" href="#home">Tipos de Indicador</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#menu1">Indicadores por Fuentes</a>
+                                    <a class="nav-link" data-toggle="tab" href="#menu1">Escoger tipo de indicador</a>
                                 </li>
                             </ul>
                             <!-- Tab panes -->
@@ -173,7 +171,7 @@ switch ($boton) {
                                         <input type="text" id="txtId" name="txtId" class="form-control" value="<?php echo $id ?>">
                                     </div>
                                     <div class="form-group">
-                                        <label>Fuente</label>
+                                        <label>Indicador</label>
                                         <input type="text" id="txtNombre" name="txtNombre" class="form-control" value="<?php echo $nombre ?>">
                                     </div>
                                     <div class="form-group">
@@ -189,7 +187,7 @@ switch ($boton) {
                                             <label for="combobox1">Indicadores disponibles</label>
                                             <select class="form-control" id="combobox1" name="combobox1">
                                                 <?php for ($i = 0; $i < count($arregloIndicadores); $i++) { ?>
-                                                    <option value="<?php echo $arregloIndicadores[$i]->getId() . ";" . $arregloIndicadores[$i]->getNombre(); ?>">
+                                                    <option value="<?php echo $arregloIndicadores[$i]->getIdIn() . ";" . $arregloIndicadores[$i]->getNombre(); ?>">
                                                         <?php echo $arregloIndicadores[$i]->getId() . ";" . $arregloIndicadores[$i]->getNombre(); ?>
                                                     </option>
                                                 <?php } ?>

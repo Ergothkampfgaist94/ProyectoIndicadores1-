@@ -13,15 +13,12 @@ $con = "";
 $listbox1 = array();
 $objControlUsuario = new ControlUsuario(null);
 $arregloUsuarios = $objControlUsuario->listar();
-
 $objControlRol = new ControlRol(null);
 $arregloRoles = $objControlRol->listar();
-//var_dump($arregloRoles);
-if (isset($_POST['bt'])) $boton = $_POST['bt']; //toma del arreglo post el value del bt	
+if (isset($_POST['bt'])) $boton = $_POST['bt'];
 if (isset($_POST['txtEmail'])) $ema = $_POST['txtEmail'];
 if (isset($_POST['txtContrasena'])) $con = $_POST['txtContrasena'];
 if (isset($_POST['listbox1'])) $listbox1 = $_POST['listbox1'];
-//var_dump($listbox1);
 switch ($boton) {
 	case 'Guardar':
 		$objUsuario = new Usuario($ema, $con);
@@ -43,10 +40,8 @@ switch ($boton) {
 		$objControlUsuario = new ControlUsuario($objUsuario);
 		$objUsuario = $objControlUsuario->consultar();
 		$con = $objUsuario->getContrasena();
-		//Llenar el listbox1 con la lista de roles del ususario específico.
 		$objControlRolUsuario = new ControlRolUsuario(null);
 		$arregloRolesConsulta = $objControlRolUsuario->listarRolesDelUsuario($ema);
-		//Asignarle los datos de arregloRolesConsulta al listbox1.
 
 		break;
 	case 'Modificar':
@@ -63,7 +58,7 @@ switch ($boton) {
 		break;
 
 	default:
-		# code...
+		
 		break;
 }
 ?>

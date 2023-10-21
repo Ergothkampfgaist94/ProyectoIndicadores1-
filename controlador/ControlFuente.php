@@ -56,16 +56,7 @@ class ControlFuente
         $idFuente = $this->objFuente->getIdFuente();
         $nombreFuente = $this->objFuente->getNombreFuente();
         $comandoSql = "UPDATE fuente SET nombre='$nombreFuente' WHERE id = '$idFuente'";
-        $objControlConexion = new ControlConexion();
-        $objControlConexion->abrirBd(
-            $GLOBALS['serv'],
-            $GLOBALS['usua'],
-            $GLOBALS['pass'],
-            $GLOBALS['bdat'],
-            $GLOBALS['port']
-        );
-        $objControlConexion->ejecutarComandoSql($comandoSql);
-        $objControlConexion->cerrarBd();
+        $conectar = $this->conectar($comandoSql);
     }
 
     function borrar()
@@ -73,15 +64,7 @@ class ControlFuente
         $idFuente = $this->objFuente->getIdFuente();
         $comandoSql = "DELETE FROM fuente WHERE id = '$idFuente'";
         $objControlConexion = new ControlConexion();
-        $objControlConexion->abrirBd(
-            $GLOBALS['serv'],
-            $GLOBALS['usua'],
-            $GLOBALS['pass'],
-            $GLOBALS['bdat'],
-            $GLOBALS['port']
-        );
-        $objControlConexion->ejecutarComandoSql($comandoSql);
-        $objControlConexion->cerrarBd();
+        $conectar = $this->conectar($comandoSql);
     }
 
     function listar()
