@@ -2,8 +2,15 @@
 class ControlIndicador
 {
     var $objIndicador;
-    function conectar($comandoSql)
+    function __construct($objIndicador)
     {
+        $this->objIndicador = $objIndicador;
+    }
+
+    function guardar()
+    {
+        $nom = $this->objIndicador->getNombreIndicador();
+        $comandoSql = "insert into indicador(nombre) values('$nom')";
         $objControlConexion = new ControlConexion();
         $objControlConexion->abrirBd(
             $GLOBALS['serv'],
@@ -14,18 +21,6 @@ class ControlIndicador
         );
         $objControlConexion->ejecutarComandoSql($comandoSql);
         $objControlConexion->cerrarBd();
-    }
-
-    function __construct($objIndicador)
-    {
-        $this->objIndicador = $objIndicador;
-    }
-
-    function guardar()
-    {
-        $nom = $this->objIndicador->getNombre();
-        $comandoSql = "insert into indicador(nombre) values('$nom')";
-        $conectar = $this->conectar($comandoSql);
     }
 
     function listar()

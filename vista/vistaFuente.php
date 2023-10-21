@@ -189,8 +189,8 @@ switch ($boton) {
                                             <label for="combobox1">Indicadores disponibles</label>
                                             <select class="form-control" id="combobox1" name="combobox1">
                                                 <?php for ($i = 0; $i < count($arregloIndicadores); $i++) { ?>
-                                                    <option value="<?php echo $arregloIndicadores[$i]->getId() . ";" . $arregloIndicadores[$i]->getNombre(); ?>">
-                                                        <?php echo $arregloIndicadores[$i]->getId() . ";" . $arregloIndicadores[$i]->getNombre(); ?>
+                                                    <option value="<?php echo $arregloIndicadores[$i]->getIdIndicador() . ";" . $arregloIndicadores[$i]->getNombreIndicador(); ?>">
+                                                        <?php echo $arregloIndicadores[$i]->getIdIndicador() . ";" . $arregloIndicadores[$i]->getNombreIndicador(); ?>
                                                     </option>
                                                 <?php } ?>
                                             </select>
