@@ -2,60 +2,43 @@
 include '../controlador/configBd.php';
 include '../controlador/ControlConexion.php';
 include '../controlador/ControlFuente.php';
-include '../controlador/ControlIndicador.php';
-include '../controlador/ControlFuenteporIndicador.php';
 include '../modelo/Fuente.php';
-include '../modelo/Indicador.php';
-include '../modelo/FuenteporIndicador.php';
 $boton = "";
-$id = "";
-$nombre = "";
-$listbox1 = array();
+$idFuente = "";
+$nombreFuente = "";
 $objControlFuente = new ControlFuente(null);
 $arregloFuente = $objControlFuente->listar();
-$objControlIndicador = new ControlIndicador(null);
-$arregloIndicadores = $objControlIndicador->listar();
 if (isset($_POST['bt'])) $boton = $_POST['bt'];
-if (isset($_POST['txtId'])) $id = $_POST['txtId'];
-if (isset($_POST['txtNombre'])) $nombre = $_POST['txtNombre'];
-if (isset($_POST['listbox1'])) $listbox1 = $_POST['listbox1'];
+if (isset($_POST['txtid'])) $idFuente = $_POST['txtid'];
+if (isset($_POST['txtNombreFuente'])) $nombreFuente = $_POST['txtNombreFuente'];
 switch ($boton) {
     case 'Guardar':
-        $objFuente = new Fuente($id, $nombre);
+        $objFuente = new Fuente($idFuente, $nombreFuente);
         $objControlFuente = new ControlFuente($objFuente);
         $objControlFuente->guardar();
-        if ($listbox1 != "") {
-            for ($i = 0; $i < count($listbox1); $i++) {
-                $cadenas = explode(";", $listbox1[$i]);
-                $id = $cadenas[0];
-                $objFuenteporIndicador = new FuenteporIndicador($id, $id);
-                $objControlFuenteporIndicador = new ControlFuenteporIndicador($objFuenteporIndicador);
-                $objControlFuenteporIndicador->guardar();
-            }
-        }
         header('Location: vistaFuente.php');
         break;
     case 'Consultar':
-        $objFuente = new Fuente($id, "");
+        $objFuente = new Fuente($idFuente, "");
         $objControlFuente = new ControlFuente($objFuente);
         $objFuente = $objControlFuente->consultar();
-        $nombre = $objFuente->getContrasena();
-        $objControlFuenteporIndicador = new ControlFuenteporIndicador(null);
-        $arregloIndicadoresConsulta = $objControlFuenteporIndicador->listarFuentesPorIndicador($id);
+        $nombreFuente = $objFuente->getNombreFuente();
         break;
     case 'Modificar':
-        $objFuente = new Fuente($id, $nombre);
+        $objFuente = new Fuente($idFuente, $nombreFuente);
         $objControlFuente = new ControlFuente($objFuente);
         $objControlFuente->modificar();
         header('Location: vistaFuente.php');
         break;
     case 'Borrar':
-        $objFuente = new Fuente($id, "");
+        $objFuente = new Fuente($idFuente, "");
         $objControlFuente = new ControlFuente($objFuente);
         $objControlFuente->borrar();
         header('Location: vistaFuente.php');
         break;
+
     default:
+        # code...
         break;
 }
 ?>
@@ -65,7 +48,7 @@ switch ($boton) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Usuarios</title>
+    <title>Fuentes</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -84,10 +67,10 @@ switch ($boton) {
                 <div class="table-title">
                     <div class="row">
                         <div class="col-sm-6">
-                            <h2 class="miEstilo">Gestión <b>Usuarios</b></h2>
+                            <h2 class="miEstilo">Gestión <b>Fuentes</b></h2>
                         </div>
                         <div class="col-sm-6">
-                            <a href="#crudModal" class="btn btn-primary" data-toggle="modal"><i class="material-icons">&#xE84E;</i> <span>Gestión Usuarios</span></a>
+                            <a href="#crudModal" class="btn btn-primary" data-toggle="modal"><i class="material-icons">&#xE84E;</i> <span>Gestión Fuentes</span></a>
 
                         </div>
                     </div>
@@ -103,7 +86,7 @@ switch ($boton) {
                             </th>
                             <th>ID</th>
                             <th>Fuentes</th>
-                            <th>Acciones</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -129,18 +112,6 @@ switch ($boton) {
                         ?>
                     </tbody>
                 </table>
-                <div class="clearfix">
-                    <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
-                    <ul class="pagination">
-                        <li class="page-item disabled"><a href="#">Previous</a></li>
-                        <li class="page-item"><a href="#" class="page-link">1</a></li>
-                        <li class="page-item"><a href="#" class="page-link">2</a></li>
-                        <li class="page-item active"><a href="#" class="page-link">3</a></li>
-                        <li class="page-item"><a href="#" class="page-link">4</a></li>
-                        <li class="page-item"><a href="#" class="page-link">5</a></li>
-                        <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                    </ul>
-                </div>
             </div>
         </div>
     </div>
@@ -154,61 +125,20 @@ switch ($boton) {
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
-
-                        <div class="container">
-                            <!-- Nav tabs -->
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#home">Tipos de Fuentes</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#menu1">Indicadores por Fuentes</a>
-                                </li>
-                            </ul>
-                            <!-- Tab panes -->
-                            <div class="tab-content">
-                                <div id="home" class="container tab-pane active"><br>
-                                    <div class="form-group">
-                                        <label>ID</label>
-                                        <input type="text" id="txtId" name="txtId" class="form-control" value="<?php echo $id ?>">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Fuente</label>
-                                        <input type="text" id="txtNombre" name="txtNombre" class="form-control" value="<?php echo $nombre ?>">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="submit" id="btnGuardar" name="bt" class="btn btn-success" value="Guardar">
-                                        <input type="submit" id="btnConsultar" name="bt" class="btn btn-success" value="Consultar">
-                                        <input type="submit" id="btnModificar" name="bt" class="btn btn-warning" value="Modificar">
-                                        <input type="submit" id="btnBorrar" name="bt" class="btn btn-warning" value="Borrar">
-                                    </div>
-                                </div>
-                                <div id="menu1" class="container tab-pane fade"><br>
-                                    <div class="container">
-                                        <div class="form-group">
-                                            <label for="combobox1">Indicadores disponibles</label>
-                                            <select class="form-control" id="combobox1" name="combobox1">
-                                                <?php for ($i = 0; $i < count($arregloIndicadores); $i++) { ?>
-                                                    <option value="<?php echo $arregloIndicadores[$i]->getIdIndicador() . ";" . $arregloIndicadores[$i]->getNombreIndicador(); ?>">
-                                                        <?php echo $arregloIndicadores[$i]->getIdIndicador() . ";" . $arregloIndicadores[$i]->getNombreIndicador(); ?>
-                                                    </option>
-                                                <?php } ?>
-                                            </select>
-                                            <br>
-                                            <label for="listbox1">Indicadores seleccionados</label>
-                                            <select multiple class="form-control" id="listbox1" name="listbox1[]">
-
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <button type="button" id="btnAgregarItem" name="bt" class="btn btn-success" onclick="agregarItem('combobox1', 'listbox1')">Agregar Item</button>
-                                            <button type="button" id="btnRemoverItem" name="bt" class="btn btn-success" onclick="removerItem('listbox1')">Remover Item</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="form-group">
+                            <label>id</label>
+                            <input type="id" id="txtid" name="txtid" class="form-control" value="<?php echo $idFuente ?>">
                         </div>
-
+                        <div class="form-group">
+                            <label>Fuente</label>
+                            <input type="nombreFuente" id="txtNombreFuente" name="txtNombreFuente" class="form-control" value="<?php echo $nombreFuente ?>">
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" id="btnGuardar" name="bt" class="btn btn-success" value="Guardar">
+                            <input type="submit" id="btnConsultar" name="bt" class="btn btn-success" value="Consultar">
+                            <input type="submit" id="btnModificar" name="bt" class="btn btn-warning" value="Modificar">
+                            <input type="submit" id="btnBorrar" name="bt" class="btn btn-warning" value="Borrar">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
