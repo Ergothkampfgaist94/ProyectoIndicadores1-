@@ -26,7 +26,10 @@ class ControlFuenteporIndicador
         $fkIdFuente = $this->objFuenteporIndicador->getfkIdFuente();
         $fkIdIndicador = $this->objFuenteporIndicador->getfkIdIndicador();
         $comandoSql = "insert into fuentesporindicador(fkidFuente,fkidIndicador) values('$fkIdFuente',$fkIdIndicador)";
-        $conectar = $this->conectar($comandoSql);
+        $objControlConexion = new ControlConexion();
+        $objControlConexion->abrirBd($GLOBALS['serv'], $GLOBALS['usua'], $GLOBALS['pass'], $GLOBALS['bdat'], $GLOBALS['port']); //Se invoca el método abrirBd.
+        $objControlConexion->ejecutarComandoSql($comandoSql);
+        $objControlConexion->cerrarBd();
     }
 
     function listarFuentesPorIndicador($fkidFuente)
