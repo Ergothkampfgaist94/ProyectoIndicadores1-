@@ -4,10 +4,8 @@ class RolUsuario
     var $fkEmail;
     var $fkIdRol;
 
-    function __construct(
-        $fkEmail,
-        $fkIdRol
-    ) {
+    function __construct($fkEmail, $fkIdRol)
+    {
         $this->fkEmail = $fkEmail;
         $this->fkIdRol = $fkIdRol;
     }

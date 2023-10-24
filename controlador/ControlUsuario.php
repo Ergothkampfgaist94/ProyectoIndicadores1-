@@ -3,19 +3,6 @@ class ControlUsuario
 {
 
     var $objUsuario;
-    function conectar($comandoSql)
-    {
-        $objControlConexion = new ControlConexion();
-        $objControlConexion->abrirBd(
-            $GLOBALS['serv'],
-            $GLOBALS['usua'],
-            $GLOBALS['pass'],
-            $GLOBALS['bdat'],
-            $GLOBALS['port']
-        );
-        $objControlConexion->ejecutarComandoSql($comandoSql);
-        $objControlConexion->cerrarBd();
-    }
 
     function __construct($objUsuario)
     {
@@ -30,13 +17,7 @@ class ControlUsuario
         $con = $this->objUsuario->getContrasena();
         $comandoSql = "SELECT * FROM tblUsuario WHERE nomUsuario='$usu' AND contrasena='$con'";
         $objControlConexion = new ControlConexion();
-        $objControlConexion->abrirBd(
-            $GLOBALS['serv'],
-            $GLOBALS['usua'],
-            $GLOBALS['pass'],
-            $GLOBALS['bdat'],
-            $GLOBALS['port']
-        );
+        $objControlConexion->abrirBd($GLOBALS['serv'], $GLOBALS['usua'], $GLOBALS['pass'], $GLOBALS['bdat'], $GLOBALS['port']);
         $recordSet = $objControlConexion->ejecutarSelect($comandoSql);
         try {
             if (mysqli_num_rows($recordSet) > 0) {
@@ -55,13 +36,7 @@ class ControlUsuario
         $listadoRolesDelUsuario = [];
         $comandoSQL = "SELECT fkIdRol FROM tblrol_usuario WHERE fkNomUsuario='$nomUsu'";
         $objControlConexion = new ControlConexion();
-        $objControlConexion->abrirBd(
-            $GLOBALS['serv'],
-            $GLOBALS['usua'],
-            $GLOBALS['pass'],
-            $GLOBALS['bdat'],
-            $GLOBALS['port']
-        );
+        $objControlConexion->abrirBd($GLOBALS['serv'], $GLOBALS['usua'], $GLOBALS['pass'], $GLOBALS['bdat'], $GLOBALS['port']);
         $recordSet = $objControlConexion->ejecutarSelect($comandoSQL);
         try {
             if (mysqli_num_rows($recordSet) > 0) {
@@ -82,8 +57,12 @@ class ControlUsuario
     {
         $ema = $this->objUsuario->getEmail();
         $con = $this->objUsuario->getContrasena();
+
         $comandoSql = "INSERT INTO usuario(email,contrasena) VALUES ('$ema', '$con')";
-        $conectar = $this->conectar($comandoSql);
+        $objControlConexion = new ControlConexion();
+        $objControlConexion->abrirBd($GLOBALS['serv'], $GLOBALS['usua'], $GLOBALS['pass'], $GLOBALS['bdat'], $GLOBALS['port']);
+        $objControlConexion->ejecutarComandoSql($comandoSql);
+        $objControlConexion->cerrarBd();
     }
 
     function consultar()
@@ -92,13 +71,7 @@ class ControlUsuario
 
         $comandoSql = "SELECT * FROM usuario WHERE email = '$ema'";
         $objControlConexion = new ControlConexion();
-        $objControlConexion->abrirBd(
-            $GLOBALS['serv'],
-            $GLOBALS['usua'],
-            $GLOBALS['pass'],
-            $GLOBALS['bdat'],
-            $GLOBALS['port']
-        );
+        $objControlConexion->abrirBd($GLOBALS['serv'], $GLOBALS['usua'], $GLOBALS['pass'], $GLOBALS['bdat'], $GLOBALS['port']);
         $recordSet = $objControlConexion->ejecutarSelect($comandoSql);
         if ($row = $recordSet->fetch_array(MYSQLI_BOTH)) {
             $this->objUsuario->setContrasena($row['contrasena']);
@@ -111,28 +84,29 @@ class ControlUsuario
     {
         $ema = $this->objUsuario->getEmail();
         $con = $this->objUsuario->getContrasena();
+
         $comandoSql = "UPDATE usuario SET contrasena='$con' WHERE email = '$ema'";
-        $conectar = $this->conectar($comandoSql);
+        $objControlConexion = new ControlConexion();
+        $objControlConexion->abrirBd($GLOBALS['serv'], $GLOBALS['usua'], $GLOBALS['pass'], $GLOBALS['bdat'], $GLOBALS['port']);
+        $objControlConexion->ejecutarComandoSql($comandoSql);
+        $objControlConexion->cerrarBd();
     }
 
     function borrar()
     {
         $ema = $this->objUsuario->getEmail();
         $comandoSql = "DELETE FROM usuario WHERE email = '$ema'";
-        $conectar = $this->conectar($comandoSql);
+        $objControlConexion = new ControlConexion();
+        $objControlConexion->abrirBd($GLOBALS['serv'], $GLOBALS['usua'], $GLOBALS['pass'], $GLOBALS['bdat'], $GLOBALS['port']);
+        $objControlConexion->ejecutarComandoSql($comandoSql);
+        $objControlConexion->cerrarBd();
     }
 
     function listar()
     {
         $comandoSql = "SELECT * FROM usuario";
         $objControlConexion = new ControlConexion();
-        $objControlConexion->abrirBd(
-            $GLOBALS['serv'],
-            $GLOBALS['usua'],
-            $GLOBALS['pass'],
-            $GLOBALS['bdat'],
-            $GLOBALS['port']
-        );
+        $objControlConexion->abrirBd($GLOBALS['serv'], $GLOBALS['usua'], $GLOBALS['pass'], $GLOBALS['bdat'], $GLOBALS['port']);
         $recordSet = $objControlConexion->ejecutarSelect($comandoSql);
         if (mysqli_num_rows($recordSet) > 0) {
             $arregloUsuarios = array();

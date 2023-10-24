@@ -2,19 +2,6 @@
 class ControlRolUsuario
 {
     var $objRolUsuario;
-    function conectar($comandoSql)
-    {
-        $objControlConexion = new ControlConexion();
-        $objControlConexion->abrirBd(
-            $GLOBALS['serv'],
-            $GLOBALS['usua'],
-            $GLOBALS['pass'],
-            $GLOBALS['bdat'],
-            $GLOBALS['port']
-        );
-        $objControlConexion->ejecutarComandoSql($comandoSql);
-        $objControlConexion->cerrarBd();
-    }
 
     function __construct($objRolUsuario)
     {
@@ -25,8 +12,11 @@ class ControlRolUsuario
     {
         $fkEmail = $this->objRolUsuario->getFkEmail();
         $fkIdRol = $this->objRolUsuario->getFkIdRol();
-        $comandoSql = "insert into rol_usuario(fkemail,fkidrol) values('$fkEmail',$fkIdRol)";
-        $conectar = $this->conectar($comandoSql);
+        $comando = "insert into rol_usuario(fkEmail,fkIdRol) values('$fkEmail',$fkIdRol)";
+        $objControlConexion = new ControlConexion();
+        $objControlConexion->abrirBd($GLOBALS['serv'], $GLOBALS['usua'], $GLOBALS['pass'], $GLOBALS['bdat'], $GLOBALS['port']); //Se invoca el método abrirBd.
+        $objControlConexion->ejecutarComandoSql($comando);
+        $objControlConexion->cerrarBd();
     }
 
     function listarRolesDelUsuario($fkEmail)
@@ -35,13 +25,7 @@ class ControlRolUsuario
             FROM rol_usuario INNER JOIN ROL ON rol_usuario.fkidrol = rol.id
             WHERE fkemail = '$fkEmail'";
         $objControlConexion = new ControlConexion();
-        $objControlConexion->abrirBd(
-            $GLOBALS['serv'],
-            $GLOBALS['usua'],
-            $GLOBALS['pass'],
-            $GLOBALS['bdat'],
-            $GLOBALS['port']
-        );
+        $objControlConexion->abrirBd($GLOBALS['serv'], $GLOBALS['usua'], $GLOBALS['pass'], $GLOBALS['bdat'], $GLOBALS['port']);
         $recordSet = $objControlConexion->ejecutarSelect($comandoSql);
         if (mysqli_num_rows($recordSet) > 0) {
             $arregloRoles = array();
