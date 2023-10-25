@@ -4,19 +4,6 @@ class ControlTipoIndicador
 {
 
     var $objControlTipoIndicador;
-    function conectar($comandoSql)
-    {
-        $objControlConexion = new ControlConexion();
-        $objControlConexion->abrirBd(
-            $GLOBALS['serv'],
-            $GLOBALS['usua'],
-            $GLOBALS['pass'],
-            $GLOBALS['bdat'],
-            $GLOBALS['port']
-        );
-        $objControlConexion->ejecutarComandoSql($comandoSql);
-        $objControlConexion->cerrarBd();
-    }
 
     function __construct($objControlTipoIndicador)
     {
@@ -28,7 +15,16 @@ class ControlTipoIndicador
         $IdTipoIndicador = $this->objControlTipoIndicador->getIdTipoIndicador();
         $nombreTipoIndicador = $this->objControlTipoIndicador->getnombreTipoIndicador();
         $comandoSql = "INSERT INTO tipoindicador(id,nombre) VALUES ('$IdTipoIndicador', '$nombreTipoIndicador')";
-        $conectar = $this->conectar($comandoSql);
+        $objControlConexion = new ControlConexion();
+        $objControlConexion->abrirBd(
+            $GLOBALS['serv'],
+            $GLOBALS['usua'],
+            $GLOBALS['pass'],
+            $GLOBALS['bdat'],
+            $GLOBALS['port']
+        );
+        $objControlConexion->ejecutarComandoSql($comandoSql);
+        $objControlConexion->cerrarBd();
     }
 
     function consultar()
@@ -57,14 +53,32 @@ class ControlTipoIndicador
         $IdTipoIndicador = $this->objControlTipoIndicador->getIdTipoIndicador();
         $nombreTipoIndicador = $this->objControlTipoIndicador->getnombreTipoIndicador();
         $comandoSql = "UPDATE tipoindicador SET nombre='$nombreTipoIndicador' WHERE id = '$IdTipoIndicador'";
-        $conectar = $this->conectar($comandoSql);
+        $objControlConexion = new ControlConexion();
+        $objControlConexion->abrirBd(
+            $GLOBALS['serv'],
+            $GLOBALS['usua'],
+            $GLOBALS['pass'],
+            $GLOBALS['bdat'],
+            $GLOBALS['port']
+        );
+        $objControlConexion->ejecutarComandoSql($comandoSql);
+        $objControlConexion->cerrarBd();
     }
 
     function borrar()
     {
         $IdTipoIndicador = $this->objControlTipoIndicador->getIdTipoIndicador();
         $comandoSql = "DELETE FROM tipoindicador WHERE id = '$IdTipoIndicador'";
-        $conectar = $this->conectar($comandoSql);
+        $objControlConexion = new ControlConexion();
+        $objControlConexion->abrirBd(
+            $GLOBALS['serv'],
+            $GLOBALS['usua'],
+            $GLOBALS['pass'],
+            $GLOBALS['bdat'],
+            $GLOBALS['port']
+        );
+        $objControlConexion->ejecutarComandoSql($comandoSql);
+        $objControlConexion->cerrarBd();
     }
 
     function listar()
