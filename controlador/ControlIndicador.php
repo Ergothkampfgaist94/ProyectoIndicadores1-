@@ -39,9 +39,12 @@ class ControlIndicador
             $arregloIndicadores = array();
             $i = 0;
             while ($row = $recordSet->fetch_array(MYSQLI_BOTH)) {
-                $objIndicador = new Indicador(0, "");
+                $objIndicador = new Indicador(0,"","","","");
                 $objIndicador->setIdIndicador($row['id']);
                 $objIndicador->setNombreIndicador($row['nombre']);
+                $objIndicador->setCodigo($row['codigo']);
+                $objIndicador->setNombreIndicador($row['objetivo']);
+                $objIndicador->setNombreIndicador($row['alcance']);
                 $arregloIndicadores[$i] = $objIndicador;
                 $i++;
             }
