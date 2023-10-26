@@ -4,21 +4,30 @@ include '../controlador/ControlConexion.php';
 include '../controlador/ControlActor.php';
 include '../controlador/ControlTipoActor.php';
 include '../modelo/Actor.php';
+include '../modelo/TipoActor.php';
 $boton = "";
 $idActor = "";
 $nombreActor = "";
-$fkidTipoActor = "";
+$listbox1 = array();
 $objControlTipoActor = new ControlTipoActor(null);
 $arregloTipoActor = $objControlTipoActor->listar();
+$objControlActor = new ControlTipoActor(null);
+$arregloActor = $objControlActor->listar();
 if (isset($_POST['bt'])) $boton = $_POST['bt'];
 if (isset($_POST['txtid'])) $idActor = $_POST['txtid'];
 if (isset($_POST['txtNombreActor'])) $nombreActor = $_POST['txtNombreActor'];
 if (isset($_POST['listbox1'])) $listbox1 = $_POST['listbox1'];
 switch ($boton) {
     case 'Guardar':
-        $objActor = new Actor($idActor, $nombreActor, $fkidTipoActor);
-        $objControlActor = new ControlActor($objActor);
-        $objControlActor->guardar();
+        if ($listbox1 != "") {
+            for ($i = 0; $i < count($listbox1); $i++) {
+                $cadenas = explode(". ", $listbox1[$i]);
+                $id = $cadenas[0];
+                $objActor = new Actor($idActor, $nombreActor, $listbox1);
+                $objControlActor = new ControlActor($objActor);
+                $objControlActor->guardar();
+            }
+        }
         header('Location: vistaActor.php');
         break;
     case 'Consultar':
@@ -150,11 +159,11 @@ switch ($boton) {
                         </div>
                         <div class="container">
                             <div class="form-group">
-                                <label for="combobox1">Todos los roles</label>
+                                <label for="combobox1">Todos los tipos de actores</label>
                                 <select class="form-control" id="combobox1" name="combobox1">
-                                    <?php for ($i = 0; $i < count($arregloActor); $i++) { ?>
-                                        <option value="<?php echo $arregloActor[$i]->getIdActor() . ";" . $arregloActor[$i]->getNombreActor(); ?>">
-                                            <?php echo $arregloActor[$i]->getIdActor() . ";" . $arregloActor[$i]->getNombreActor(); ?>
+                                    <?php for ($i = 0; $i < count($arregloTipoActor); $i++) { ?>
+                                        <option value="<?php echo $arregloTipoActor[$i]->getidTipoActor() . ". " . $arregloTipoActor[$i]->getnombreTipoActor(); ?>">
+                                            <?php echo $arregloTipoActor[$i]->getidTipoActor() . ". " . $arregloTipoActor[$i]->getnombreTipoActor(); ?>
                                         </option>
                                     <?php } ?>
                                 </select>
