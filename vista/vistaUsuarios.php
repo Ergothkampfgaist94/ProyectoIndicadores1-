@@ -26,7 +26,7 @@ switch ($boton) {
 		$objControlUsuario->guardar();
 		if ($listbox1 != "") {
 			for ($i = 0; $i < count($listbox1); $i++) {
-				$cadenas = explode(";", $listbox1[$i]);
+				$cadenas = explode(". ", $listbox1[$i]);
 				$id = $cadenas[0];
 				$objRolUsuario = new RolUsuario($ema, $id);
 				$objControlRolUsuario = new ControlRolUsuario($objRolUsuario);
@@ -194,8 +194,8 @@ switch ($boton) {
 											<label for="combobox1">Todos los roles</label>
 											<select class="form-control" id="combobox1" name="combobox1">
 												<?php for ($i = 0; $i < count($arregloRoles); $i++) { ?>
-													<option value="<?php echo $arregloRoles[$i]->getId() . ";" . $arregloRoles[$i]->getNombre(); ?>">
-														<?php echo $arregloRoles[$i]->getId() . ";" . $arregloRoles[$i]->getNombre(); ?>
+													<option value="<?php echo $arregloRoles[$i]->getId() . ". " . $arregloRoles[$i]->getNombre(); ?>">
+														<?php echo $arregloRoles[$i]->getId() . ". " . $arregloRoles[$i]->getNombre(); ?>
 													</option>
 												<?php } ?>
 											</select>
