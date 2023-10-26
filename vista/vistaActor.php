@@ -2,19 +2,21 @@
 include '../controlador/configBd.php';
 include '../controlador/ControlConexion.php';
 include '../controlador/ControlActor.php';
+include '../controlador/ControlTipoActor.php';
 include '../modelo/Actor.php';
 $boton = "";
 $idActor = "";
 $nombreActor = "";
 $fkidTipoActor = "";
-$objControlActor = new ControlActor(null);
-$arregloActor = $objControlActor->listar();
+$objControlTipoActor = new ControlTipoActor(null);
+$arregloTipoActor = $objControlTipoActor->listar();
 if (isset($_POST['bt'])) $boton = $_POST['bt'];
 if (isset($_POST['txtid'])) $idActor = $_POST['txtid'];
 if (isset($_POST['txtNombreActor'])) $nombreActor = $_POST['txtNombreActor'];
+if (isset($_POST['listbox1'])) $listbox1 = $_POST['listbox1'];
 switch ($boton) {
     case 'Guardar':
-        $objActor = new Actor($idActor, $nombreActor);
+        $objActor = new Actor($idActor, $nombreActor, $fkidTipoActor);
         $objControlActor = new ControlActor($objActor);
         $objControlActor->guardar();
         header('Location: vistaActor.php');
@@ -150,9 +152,9 @@ switch ($boton) {
                             <div class="form-group">
                                 <label for="combobox1">Todos los roles</label>
                                 <select class="form-control" id="combobox1" name="combobox1">
-                                    <?php for ($i = 0; $i < count($arregloRoles); $i++) { ?>
-                                        <option value="<?php echo $arregloRoles[$i]->getId() . ";" . $arregloRoles[$i]->getNombre(); ?>">
-                                            <?php echo $arregloRoles[$i]->getId() . ";" . $arregloRoles[$i]->getNombre(); ?>
+                                    <?php for ($i = 0; $i < count($arregloActor); $i++) { ?>
+                                        <option value="<?php echo $arregloActor[$i]->getIdActor() . ";" . $arregloActor[$i]->getNombreActor(); ?>">
+                                            <?php echo $arregloActor[$i]->getIdActor() . ";" . $arregloActor[$i]->getNombreActor(); ?>
                                         </option>
                                     <?php } ?>
                                 </select>
