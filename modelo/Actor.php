@@ -1,13 +1,13 @@
 <?php
 class Actor
 {
-    var $idActor, $nombreActor,$fkidTipoActor;
+    var $idActor, $nombreActor, $fkidTipoActor;
 
-    function __construct($idActor, $nombreActor)
+    function __construct($idActor, $nombreActor, $fkidTipoActor)
     {
         $this->idActor = $idActor;
         $this->nombreActor = $nombreActor;
-        $this->fkidTipoActor = null;
+        $this->fkidTipoActor = $fkidTipoActor;
     }
 
     function setIdActor($idActor)

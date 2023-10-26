@@ -4,7 +4,6 @@ class ControlActor
 {
 
     var $objActor;
-    var $idfkIdTipoActor;
 
     function __construct($objActor)
     {
@@ -15,7 +14,8 @@ class ControlActor
     {
         $idActor = $this->objActor->getIdActor();
         $nombreActor = $this->objActor->getNombreActor();
-        $comandoSql = "INSERT INTO actor(id,nombre,fkidtipoactor) VALUES ('$idActor', '$nombreActor',)";
+        $fkidTipoActor = $this->objActor->getfkidTipoActor();
+        $comandoSql = "INSERT INTO actor(id,nombre,fkidtipoactor) VALUES ('$idActor', '$nombreActor','$fkidTipoActor')";
         $objControlConexion = new ControlConexion();
         $objControlConexion->abrirBd(
             $GLOBALS['serv'],
@@ -42,7 +42,7 @@ class ControlActor
         );
         $recordSet = $objControlConexion->ejecutarSelect($comandoSql);
         if ($row = $recordSet->fetch_array(MYSQLI_BOTH)) {
-            $this->objActor->setnombreActor($row['nombre']);
+            $this->objActor->setNombreActor($row['nombre']);
         }
         $objControlConexion->cerrarBd();
         return $this->objActor;
@@ -99,7 +99,8 @@ class ControlActor
             while ($row = $recordSet->fetch_array(MYSQLI_BOTH)) {
                 $objActor = new Actor("", "", "");
                 $objActor->setIdActor($row['id']);
-                $objActor->setnombreActor($row['nombre']);
+                $objActor->setNombreActor($row['nombre']);
+                $objActor->setfkidTipoActor($row['fkidtipoactor']);
                 $arregloActor[$i] = $objActor;
                 $i++;
             }

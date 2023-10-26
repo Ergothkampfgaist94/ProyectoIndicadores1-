@@ -11,7 +11,7 @@ $nombreActor = "";
 $listbox1 = array();
 $objControlTipoActor = new ControlTipoActor(null);
 $arregloTipoActor = $objControlTipoActor->listar();
-$objControlActor = new ControlTipoActor(null);
+$objControlActor = new ControlActor(null);
 $arregloActor = $objControlActor->listar();
 if (isset($_POST['bt'])) $boton = $_POST['bt'];
 if (isset($_POST['txtid'])) $idActor = $_POST['txtid'];
@@ -23,7 +23,7 @@ switch ($boton) {
             for ($i = 0; $i < count($listbox1); $i++) {
                 $cadenas = explode(". ", $listbox1[$i]);
                 $id = $cadenas[0];
-                $objActor = new Actor($idActor, $nombreActor, $listbox1);
+                $objActor = new Actor($idActor, $nombreActor, $id);
                 $objControlActor = new ControlActor($objActor);
                 $objControlActor->guardar();
             }
@@ -31,19 +31,19 @@ switch ($boton) {
         header('Location: vistaActor.php');
         break;
     case 'Consultar':
-        $objActor = new Actor($idActor, "");
+        $objActor = new Actor($idActor, "", "");
         $objControlActor = new ControlActor($objActor);
         $objControlActor = $objControlActor->consultar();
         $nombreActor = $objActor->getNombreActor();
         break;
     case 'Modificar':
-        $objActor = new Actor($idActor, $nombreActor);
+        $objActor = new Actor($idActor, $nombreActor, "");
         $objControlActor = new ControlActor($objActor);
         $objControlActor->modificar();
         header('Location: vistaActor.php');
         break;
     case 'Borrar':
-        $objActor = new Actor($idActor, "");
+        $objActor = new Actor($idActor, "", "");
         $objControlActor = new ControlActor($objActor);
         $objControlActor->borrar();
         header('Location: vistaActor.php');
@@ -98,7 +98,7 @@ switch ($boton) {
                             </th>
                             <th>ID</th>
                             <th>Nombre Actor</th>
-                            <th>Actions</th>
+                            <th>Tipo Actor</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -114,10 +114,7 @@ switch ($boton) {
                                 </td>
                                 <td><?php echo $arregloActor[$i]->getIdActor(); ?></td>
                                 <td><?php echo $arregloActor[$i]->getNombreActor(); ?></td>
-                                <td>
-                                    <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                    <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                                </td>
+                                <td><?php echo $arregloActor[$i]->getfkidTipoActor(); ?></td>
                             </tr>
                         <?php
                         }
@@ -154,8 +151,8 @@ switch ($boton) {
                             <input type="id" id="txtid" name="txtid" class="form-control" value="<?php echo $idActor ?>">
                         </div>
                         <div class="form-group">
-                            <label>Tipo Actor</label>
-                            <input type="nombreActor" id="txtNombreActor" name="txtNombreActor" class="form-control" value="<?php echo $nombreActor ?>">
+                            <label>Nombre Actor</label>
+                            <input type="text" id="txtNombreActor" name="txtNombreActor" class="form-control" value="<?php echo $nombreActor ?>">
                         </div>
                         <div class="container">
                             <div class="form-group">
