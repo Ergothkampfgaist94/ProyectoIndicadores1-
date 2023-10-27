@@ -8,8 +8,6 @@ include '../modelo/TipoActor.php';
 $boton = "";
 $idActor = "";
 $nombreActor = "";
-$listbox1 = array();
-$guardarbox = array();
 $objControlTipoActor = new ControlTipoActor(null);
 $arregloTipoActor = $objControlTipoActor->listar();
 $objControlActor = new ControlActor(null);
@@ -20,7 +18,7 @@ if (isset($_POST['txtNombreActor'])) $nombreActor = $_POST['txtNombreActor'];
 if (isset($_POST['combobox1'])) $combobox1 = $_POST['combobox1'];
 switch ($boton) {
     case 'Guardar':
-        $cadenas = explode(". ", $combobox1);
+        $cadena = explode(". ", $combobox1);
         $id = $combobox1[0];
         $objActor = new Actor($idActor, $nombreActor, $id);
         $objControlActor = new ControlActor($objActor);

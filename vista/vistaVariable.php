@@ -8,7 +8,6 @@ include '../modelo/Usuario.php';
 $boton = "";
 $idVariable = "";
 $nombreVariable = "";
-$listbox1 = array();
 $objControlUsuario = new ControlUsuario(null);
 $arregloUsuario = $objControlUsuario->listar();
 $objControlVariable = new ControlVariable(null);
@@ -16,18 +15,13 @@ $arregloVariable = $objControlVariable->listar();
 if (isset($_POST['bt'])) $boton = $_POST['bt'];
 if (isset($_POST['txtid'])) $idVariable = $_POST['txtid'];
 if (isset($_POST['txtNombreVariable'])) $nombreVariable = $_POST['txtNombreVariable'];
-if (isset($_POST['listbox1'])) $listbox1 = $_POST['listbox1'];
+if (isset($_POST['combobox1'])) $combobox1 = $_POST['combobox1'];
 switch ($boton) {
     case 'Guardar':
-        if ($listbox1 != "") {
-            for ($i = 0; $i < count($listbox1); $i++) {
-                $cadenas = explode(". ", $listbox1[$i]);
-                $emailusuario = $cadenas[0];
-                $objVariable = new Variable($idVariable, $nombreVariable, $emailusuario);
-                $objControlVariable = new ControlVariable($objVariable);
-                $objControlVariable->guardar();
-            }
-        }
+        $emailusuario = $combobox1;
+        $objVariable = new Variable($idVariable, $nombreVariable, $emailusuario);
+        $objControlVariable = new ControlVariable($objVariable);
+        $objControlVariable->guardar();
         header('Location: vistaVariable.php');
         break;
     case 'Consultar':
@@ -60,7 +54,7 @@ switch ($boton) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Actor</title>
+    <title>Variable</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -139,7 +133,7 @@ switch ($boton) {
     <div id="crudModal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="vistaActor.php" method="post">
+                <form action="vistaVariable.php" method="post">
                     <div class="modal-header">
                         <h4 class="modal-title">Tipo Variable</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -155,36 +149,24 @@ switch ($boton) {
                         </div>
                         <div class="container">
                             <div class="form-group">
-                                <label for="combobox1">Asignar Variable</label>
+                                <label for="combobox1">Asignar Usuario</label>
                                 <select class="form-control" id="combobox1" name="combobox1">
                                     <?php for ($i = 0; $i < count($arregloUsuario); $i++) { ?>
                                         <option value="<?php echo $arregloUsuario[$i]->getEmail(); ?>">
                                             <?php echo $arregloUsuario[$i]->getEmail(); ?>
                                         </option>
                                     <?php } ?>
-                                </select>
-                                <br>
-                                <label for="listbox1">Emails Asociados</label>
-                                <select multiple class="form-control" id="listbox1" name="listbox1[]">
-
-                                </select>
                             </div>
                             <div class="form-group">
-                                <button type="button" id="btnAgregarItem" name="bt" class="btn btn-success" onclick="agregarItem('combobox1', 'listbox1')">Agregar Item</button>
-                                <button type="button" id="btnRemoverItem" name="bt" class="btn btn-success" onclick="removerItem('listbox1')">Remover Item</button>
+                                <input type="submit" id="btnGuardar" name="bt" class="btn btn-success" value="Guardar">
+                                <input type="submit" id="btnConsultar" name="bt" class="btn btn-success" value="Consultar">
+                                <input type="submit" id="btnModificar" name="bt" class="btn btn-warning" value="Modificar">
+                                <input type="submit" id="btnBorrar" name="bt" class="btn btn-warning" value="Borrar">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <input type="submit" id="btnGuardar" name="bt" class="btn btn-success" value="Guardar">
-                            <input type="submit" id="btnConsultar" name="bt" class="btn btn-success" value="Consultar">
-                            <input type="submit" id="btnModificar" name="bt" class="btn btn-warning" value="Modificar">
-                            <input type="submit" id="btnBorrar" name="bt" class="btn btn-warning" value="Borrar">
+                        <div class="modal-footer">
+                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-
-                    </div>
                 </form>
             </div>
         </div>
