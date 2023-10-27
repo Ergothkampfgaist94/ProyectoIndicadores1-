@@ -9,6 +9,7 @@ $boton = "";
 $idActor = "";
 $nombreActor = "";
 $listbox1 = array();
+$guardarbox = array();
 $objControlTipoActor = new ControlTipoActor(null);
 $arregloTipoActor = $objControlTipoActor->listar();
 $objControlActor = new ControlActor(null);
@@ -16,18 +17,14 @@ $arregloActor = $objControlActor->listar();
 if (isset($_POST['bt'])) $boton = $_POST['bt'];
 if (isset($_POST['txtid'])) $idActor = $_POST['txtid'];
 if (isset($_POST['txtNombreActor'])) $nombreActor = $_POST['txtNombreActor'];
-if (isset($_POST['listbox1'])) $listbox1 = $_POST['listbox1'];
+if (isset($_POST['combobox1'])) $combobox1 = $_POST['combobox1'];
 switch ($boton) {
     case 'Guardar':
-        if ($listbox1 != "") {
-            for ($i = 0; $i < count($listbox1); $i++) {
-                $cadenas = explode(". ", $listbox1[$i]);
-                $id = $cadenas[0];
-                $objActor = new Actor($idActor, $nombreActor, $id);
-                $objControlActor = new ControlActor($objActor);
-                $objControlActor->guardar();
-            }
-        }
+        $cadenas = explode(". ", $combobox1);
+        $id = $combobox1[0];
+        $objActor = new Actor($idActor, $nombreActor, $id);
+        $objControlActor = new ControlActor($objActor);
+        $objControlActor->guardar();
         header('Location: vistaActor.php');
         break;
     case 'Consultar':
@@ -163,16 +160,6 @@ switch ($boton) {
                                             <?php echo $arregloTipoActor[$i]->getidTipoActor() . ". " . $arregloTipoActor[$i]->getnombreTipoActor(); ?>
                                         </option>
                                     <?php } ?>
-                                </select>
-                                <br>
-                                <label for="listbox1">Roles específicos del usuario</label>
-                                <select multiple class="form-control" id="listbox1" name="listbox1[]">
-
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <button type="button" id="btnAgregarItem" name="bt" class="btn btn-success" onclick="agregarItem('combobox1', 'listbox1')">Agregar Item</button>
-                                <button type="button" id="btnRemoverItem" name="bt" class="btn btn-success" onclick="removerItem('listbox1')">Remover Item</button>
                             </div>
                         </div>
                         <div class="form-group">
