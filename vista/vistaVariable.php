@@ -155,7 +155,7 @@ switch ($boton) {
                         </div>
                         <div class="container">
                             <div class="form-group">
-                                <label for="combobox1">Tipos de Variables</label>
+                                <label for="combobox1">Asignar Variable</label>
                                 <select class="form-control" id="combobox1" name="combobox1">
                                     <?php for ($i = 0; $i < count($arregloUsuario); $i++) { ?>
                                         <option value="<?php echo $arregloUsuario[$i]->getEmail(); ?>">
@@ -164,7 +164,7 @@ switch ($boton) {
                                     <?php } ?>
                                 </select>
                                 <br>
-                                <label for="listbox1">Emails específicos del usuario</label>
+                                <label for="listbox1">Emails Asociados</label>
                                 <select multiple class="form-control" id="listbox1" name="listbox1[]">
 
                                 </select>
